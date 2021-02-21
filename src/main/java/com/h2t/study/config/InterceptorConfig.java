@@ -15,8 +15,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //除登出接口以外 其余接口都需要进行拦截
-        registry.addInterceptor(restAuthInterceptor()).excludePathPatterns("/logout/**").addPathPatterns("/**");
+        //除登陆登出接口以外 其余接口都需要进行拦截
+        registry.addInterceptor(restAuthInterceptor())
+                .excludePathPatterns("/logout/**")
+                .excludePathPatterns("/login/**")
+                .addPathPatterns("/**");
     }
 
     @Bean
