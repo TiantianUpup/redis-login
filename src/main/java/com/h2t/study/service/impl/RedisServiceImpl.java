@@ -1,15 +1,32 @@
 package com.h2t.study.service.impl;
 
 import com.h2t.study.service.RedisService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * RedisService
+ *
+ * @author hetiantian
+ * @version 1.0
+ * @Date 2021/01/11 10:35
+ */
 @Slf4j
 @Service
 public final class RedisServiceImpl implements RedisService {
+    /**
+     * 过期时长
+     */
     private final Long duration = 1 * 24 * 60 * 60 * 1000L;
+
     @Resource
     private RedisTemplate redisTemplate;
 
@@ -39,8 +56,14 @@ public final class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void delete(String key) {
-        redisTemplate.delete(key);
+    public boolean delete(String key) {
+        boolean result = redisTemplate.delete(key);
         log.info("delete from redis, key is: {}", key);
+        return result;
+    }
+
+    @Override
+    public Long getExpireTime(String key) {
+        return valueOperations.getOperations().getExpire(key);
     }
 }

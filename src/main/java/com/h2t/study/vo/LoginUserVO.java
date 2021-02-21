@@ -5,21 +5,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginUserVO {
-    private String id;
+    /**
+     * 用户账号
+     */
+    @NotBlank(message = "用户名为空")
+    private String username;
 
-    private String account;
-
+    /**
+     * 账号密码
+     */
+    @NotBlank(message = "密码为空")
     private String password;
-
-    private String captcha;
-
-    //appKey和appSecret两个字段直接写死
-    private String appKey;
-
-    private String appSecret;
 }

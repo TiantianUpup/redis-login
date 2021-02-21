@@ -8,22 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserTokenDTO {
+    /**
+     * 用户ID
+     */
     private String id;
 
-    private String account;
-
-    private String password;
-
-    //appKey和appSecret两个字段直接写死
-    private String appKey = "";
-
     /**
-     * 生成时间
-     */
-    private Long gmtCreateTime;
-
-    /**
-     * 过期时间
-     */
-    private Long expireTime;
+     * 用户名
+     * */
+    private String username;
 }

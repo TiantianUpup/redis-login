@@ -1,4 +1,4 @@
-package com.h2t.study.util;
+package com.h2t.study.utils;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
