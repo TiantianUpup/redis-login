@@ -5,6 +5,7 @@ import com.h2t.study.enums.ErrorCodeEnum;
 import com.h2t.study.exception.UserException;
 import com.h2t.study.service.RedisService;
 import com.h2t.study.utils.JWTUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.0
  * @Date 2021/02/21 20:15
  */
+@Slf4j
 public class AuthenticateInterceptor implements HandlerInterceptor {
     @Resource
     private RedisService redisService;
@@ -29,8 +31,15 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
         String authToken = request.getHeader("Authorization");
         String token = authToken.substring("Bearer".length() + 1).trim();
         UserTokenDTO userTokenDTO = JWTUtil.parseToken(token);
+        //1.判断请求是否有效
         if (redisService.get(userTokenDTO.getId()) == null) {
             throw new UserException(ErrorCodeEnum.TNP1001004);
+        }
+
+        //2.判断是否需要续期
+        if (redisService.getExpireTime(userTokenDTO.getId()) < 1 * 60 * 30) {
+            redisService.set(userTokenDTO.getId(), token);
+            log.error("update token info, id is:{}, user info is:{}", userTokenDTO.getId(), token);
         }
         return true;
     }

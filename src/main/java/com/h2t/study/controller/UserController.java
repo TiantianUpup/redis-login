@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 /**
  * LoginController
@@ -28,7 +29,8 @@ public class UserController {
     }
 
     @DeleteMapping("/login_out/{id}")
-    public Object loginOut(@PathVariable("id") String id) {
-        return null;
+    public Object loginOut(@PathVariable("id")
+                           @Valid @NotBlank(message = "id不能为空") String id) {
+        return userService.loginOut(id);
     }
 }

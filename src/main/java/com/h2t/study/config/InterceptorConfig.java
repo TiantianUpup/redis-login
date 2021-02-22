@@ -1,7 +1,6 @@
 package com.h2t.study.config;
 
 import com.h2t.study.interceptor.AuthenticateInterceptor;
-import com.h2t.study.interceptor.RestAuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -20,17 +19,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/logout/**")
                 .excludePathPatterns("/login/**")
                 .addPathPatterns("/**").order(1);
-
-        //除登陆登出接口以外 其余接口都需要进行拦截
-        registry.addInterceptor(restAuthInterceptor())
-                .excludePathPatterns("/logout/**")
-                .excludePathPatterns("/login/**")
-                .addPathPatterns("/**").order(2);
-    }
-
-    @Bean
-    public RestAuthInterceptor restAuthInterceptor() {
-        return new RestAuthInterceptor();
     }
 
     @Bean

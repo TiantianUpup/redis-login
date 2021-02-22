@@ -2,6 +2,8 @@ package com.h2t.study.dao;
 
 import com.h2t.study.po.UserPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * UserMapper
@@ -12,5 +14,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper {
-    UserPO getByUsername(String username);
+    @Select("select * from users where username = #{username}")
+    UserPO getByUsername(@Param("username") String username);
 }

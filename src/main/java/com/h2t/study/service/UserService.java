@@ -12,5 +12,5 @@ import com.h2t.study.vo.LoginUserVO;
 public interface UserService {
     String login(LoginUserVO loginUserVO);
 
-    void loginOut(String id);
+    boolean loginOut(String id);
 }

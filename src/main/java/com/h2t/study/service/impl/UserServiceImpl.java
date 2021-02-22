@@ -52,9 +52,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void loginOut(String id) {
+    public boolean loginOut(String id) {
+        boolean result = redisService.delete(id);
         if (!redisService.delete(id)) {
             throw new UserException(ErrorCodeEnum.TNP1001003);
         }
+
+        return result;
     }
 }
