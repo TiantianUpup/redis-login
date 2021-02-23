@@ -33,4 +33,9 @@ public class UserController {
                            @Valid @NotBlank(message = "id不能为空") String id) {
         return userService.loginOut(id);
     }
+
+//    @PutMapping
+//    public Object updatePassword() {
+//
+//    }
 }

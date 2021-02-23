@@ -1,8 +1,6 @@
 package com.h2t.study.interceptor;
 
 import com.h2t.study.dto.UserTokenDTO;
-import com.h2t.study.enums.ErrorCodeEnum;
-import com.h2t.study.exception.UserException;
 import com.h2t.study.service.RedisService;
 import com.h2t.study.utils.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +30,9 @@ public class AuthenticateInterceptor implements HandlerInterceptor {
         String token = authToken.substring("Bearer".length() + 1).trim();
         UserTokenDTO userTokenDTO = JWTUtil.parseToken(token);
         //1.判断请求是否有效
-        if (redisService.get(userTokenDTO.getId()) == null) {
-            throw new UserException(ErrorCodeEnum.TNP1001004);
+        if (redisService.get(userTokenDTO.getId()) == null
+                || !redisService.get(userTokenDTO.getId()).equals(token)) {
+            return false;
         }
 
         //2.判断是否需要续期

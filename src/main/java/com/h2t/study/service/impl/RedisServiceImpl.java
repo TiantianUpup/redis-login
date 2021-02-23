@@ -25,7 +25,7 @@ public final class RedisServiceImpl implements RedisService {
     /**
      * 过期时长
      */
-    private final Long duration = 1 * 24 * 60 * 60 * 1000L;
+    private final Long DURATION = 1 * 24 * 60 * 60 * 1000L;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -44,7 +44,7 @@ public final class RedisServiceImpl implements RedisService {
 
     @Override
     public void set(String key, String value) {
-        valueOperations.set(key, value, duration, TimeUnit.MILLISECONDS);
+        valueOperations.set(key, value, DURATION, TimeUnit.MILLISECONDS);
         log.info("key={}, value is: {} into redis cache", key, value);
     }
 
