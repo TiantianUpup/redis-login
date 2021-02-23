@@ -2,10 +2,8 @@ package com.h2t.study.controller;
 
 import com.h2t.study.service.UserService;
 import com.h2t.study.vo.LoginUserVO;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.h2t.study.vo.UpdatePasswordUserVO;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -24,7 +22,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public Object login(@Valid LoginUserVO loginUserVO) {
+    public Object login(@Valid @RequestBody LoginUserVO loginUserVO) {
         return userService.login(loginUserVO);
     }
 
@@ -34,8 +32,8 @@ public class UserController {
         return userService.loginOut(id);
     }
 
-//    @PutMapping
-//    public Object updatePassword() {
-//
-//    }
+    @PutMapping("/user")
+    public Object updatePassword(@Valid @RequestBody UpdatePasswordUserVO updatePasswordUserVO) {
+        return userService.updatePassword(updatePasswordUserVO);
+    }
 }

@@ -14,7 +14,8 @@ public enum ErrorCodeEnum {
     TNP1001001("TNP1001001", "用户不存在"),
     TNP1001002("TNP1001002", "用户密码错误"),
     TNP1001003("TNP1001003", "登出异常"),
-    TNP1001004("TNP1001004", "登陆过期");
+    TNP1001004("TNP1001004", "登陆过期"),
+    TNP1001005("TNP1001005", "更新密码错误");
 
 
     private String errorCode;

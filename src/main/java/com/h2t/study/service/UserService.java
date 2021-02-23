@@ -1,6 +1,7 @@
 package com.h2t.study.service;
 
 import com.h2t.study.vo.LoginUserVO;
+import com.h2t.study.vo.UpdatePasswordUserVO;
 
 /**
  * UserService
@@ -13,4 +14,6 @@ public interface UserService {
     String login(LoginUserVO loginUserVO);
 
     boolean loginOut(String id);
+
+    String updatePassword(UpdatePasswordUserVO updatePasswordUserVO);
 }

@@ -10,6 +10,7 @@ import com.h2t.study.service.UserService;
 import com.h2t.study.utils.JWTUtil;
 import com.h2t.study.utils.PropertiesUtil;
 import com.h2t.study.vo.LoginUserVO;
+import com.h2t.study.vo.UpdatePasswordUserVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
         UserTokenDTO userTokenDTO = new UserTokenDTO();
         PropertiesUtil.copyProperties(userTokenDTO, loginUserVO);
         userTokenDTO.setId(userPO.getId());
+        userTokenDTO.setGmtCreate(System.currentTimeMillis());
         String token = JWTUtil.generateToken(userTokenDTO);
 
         //3.存入token至redis
@@ -59,5 +61,30 @@ public class UserServiceImpl implements UserService {
         }
 
         return result;
+    }
+
+    @Override
+    public String updatePassword(UpdatePasswordUserVO updatePasswordUserVO) {
+        //1.修改密码
+        UserPO userPO = UserPO.builder().password(updatePasswordUserVO.getPassword())
+                .id(updatePasswordUserVO.getId())
+                .build();
+        UserPO user = userMapper.getById(updatePasswordUserVO.getId());
+        if (user == null) {
+            throw new UserException(ErrorCodeEnum.TNP1001001);
+        }
+
+        if (userMapper.updatePassword(userPO) != 1) {
+            throw new UserException(ErrorCodeEnum.TNP1001005);
+        }
+        //2.生成新的token
+        UserTokenDTO userTokenDTO = UserTokenDTO.builder()
+                .id(updatePasswordUserVO.getId())
+                .username(user.getUsername())
+                .gmtCreate(System.currentTimeMillis()).build();
+        String token = JWTUtil.generateToken(userTokenDTO);
+        //3.更新token
+        redisService.set(user.getId(), token);
+        return token;
     }
 }
